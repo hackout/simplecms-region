@@ -7,7 +7,7 @@ use Illuminate\Support\ServiceProvider;
 use SimpleCMS\Framework\Services\SimpleService;
 use SimpleCMS\Region\Services\DistanceService;
 
-class SimpleServiceProvider extends ServiceProvider
+class RegionServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
