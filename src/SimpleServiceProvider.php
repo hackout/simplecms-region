@@ -1,6 +1,6 @@
 <?php
 
-namespace SimpleCMS\Framework;
+namespace SimpleCMS\Region;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\ServiceProvider;
