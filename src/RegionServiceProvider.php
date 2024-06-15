@@ -14,7 +14,7 @@ class RegionServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        
+
     }
 
     /**
@@ -26,13 +26,12 @@ class RegionServiceProvider extends ServiceProvider
         $this->addService();
     }
 
-    protected function addService():void
+    protected function addService(): void
     {
-        if(class_exists('SimpleCMS\Framework\Services\SimpleService'))
-        {
-            SimpleService::macro('distance', function(SimpleService $service,float $lat,float $lng,float $maxDistance = 50,$latKey = 'lat',$lngKey = 'lng') {
-                $distanceService = new DistanceService($latKey,$lngKey);
-                return $distanceService->queryDistance($service,$lat,$lng,$maxDistance);
+        if (class_exists('SimpleCMS\Framework\Services\SimpleService')) {
+            SimpleService::macro('distance', function (SimpleService $service, float $lat, float $lng, float $maxDistance = 50, $latKey = 'lat', $lngKey = 'lng') {
+                $distanceService = new DistanceService($latKey, $lngKey);
+                return $distanceService->queryDistance($service, $lat, $lng, $maxDistance);
             });
         }
     }
@@ -45,9 +44,9 @@ class RegionServiceProvider extends ServiceProvider
      */
     protected function loadFacades(): void
     {
-        $this->app->bind('region', \SimpleCMS\Region\Packages\Region\Region::class);
+        $this->app->bind('region', fn() => new \SimpleCMS\Region\Packages\Region\Region(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '/data/cities.json'));
     }
-    
+
 
     /**
      * 加载辅助函数
