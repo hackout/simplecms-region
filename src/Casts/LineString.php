@@ -34,7 +34,7 @@ class LineString implements CastsAttributes
 
     public function set($model, $key, $value, $attributes)
     {
-        $srid = $attributes ? head($attributes) : '4326';
+        $srid = 4326;
         $lineStrings = array_chunk($value, 2);
         $array = Arr::map($lineStrings, function ($rs) {
             return Arr::join($rs, ' ');
