@@ -6,7 +6,7 @@ use Illuminate\Support\Collection;
 
 class Region
 {
-    protected Collection $regions;
+    protected ?Collection $regions = null;
 
     public function __construct(protected string $region_path)
     {

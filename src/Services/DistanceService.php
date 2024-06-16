@@ -6,22 +6,42 @@ use SimpleCMS\Framework\Services\SimpleService;
 
 class DistanceService
 {
-    protected string $latKey = 'lat';
-    protected string $lngKey = 'lng';
-    public function __construct(?string $latKey = 'lat', ?string $lngKey = 'lng')
+    /**
+     * 增加距离Select
+     *
+     * @author Dennis Lui <hackout@vip.qq.com>
+     * @param  SimpleService $service
+     * @param  float         $lat
+     * @param  float         $lng
+     * @param  string        $column
+     * @return SimpleService
+     */
+    public function selectDistance(SimpleService $service, float $lat, float $lng,string $column = 'location'):SimpleService
     {
-        $this->latKey = $latKey;
-        $this->lngKey = $lngKey;
+        $distanceRaw = "ST_Distance_Sphere($column, POINT($lng, $lat)) AS distance";
+        $service->setSelectRaw($distanceRaw);
+        return $service;
     }
 
-    public function queryDistance(SimpleService $service, float $lat, float $lng, float $maxDistance = 50)
+    /**
+     * 按距离查询
+     *
+     * @author Dennis Lui <hackout@vip.qq.com>
+     * @param  SimpleService $service
+     * @param  float         $lat
+     * @param  float         $lng
+     * @param  integer       $maxDistance
+     * @param  string        $column
+     * @return SimpleService
+     */
+    public function queryDistance(SimpleService $service, float $lat, float $lng, float $maxDistance = 50,string $column = 'location'):SimpleService
     {
-        $distanceSql = "(6371 * acos(cos(radians($lat)) * cos(radians($this->lngKey)) * cos(radians(lng) - radians($lng)) + sin(radians($lat)) * sin(radians($this->latKey))))";
-        $service->setSelectRaw("$distanceSql AS distance");
+        $distanceRaw = "ST_Distance_Sphere($column, POINT($lng, $lat)) AS distance";
+        $service->setSelectRaw($distanceRaw);
         $service->appendQuery([
             [
-                function ($query) use ($distanceSql, $maxDistance) {
-                    $query->whereRaw("$distanceSql <= $maxDistance");
+                function ($query) use ($distanceRaw, $maxDistance) {
+                    $query->whereRaw("$distanceRaw <= $maxDistance");
                 }
             ]
         ]);
