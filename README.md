@@ -14,12 +14,20 @@
 REGION_PATH='你的地理JSON位置' #绝对位置
 ```
 
+## 安装
+
+```bash
+composer require simplecms/region
+```
+
 ## 使用方法
 
 ```php
 use SimpleCMS\Region\Facades\Region; 
 //获取所有城市
 return Region::getAll();
+//通过代码查询城市
+return Region::findRegion(string $code = '行政标识');
 //查询所有下级
 return Region::getAllChildren(string $code = '行政标识');
 //带深度查询
@@ -28,6 +36,21 @@ return Region::getChildren(string $code, int $deep = 0);
 distance($lat1,$lng1,$lat2,$lng2);
 //SimpleCMS service
 $service->distance($lat1,$lng1,$maxDistance,$latKey,$lngKey);
+```
+
+## SimpleCMS
+
+请先加载simplecms/framework
+
+### 服务调用方法
+
+```php
+use SimpleService;
+
+//获取距离
+$service->selectDistance(float $lat = 23.23211, float $lng = 111.23123,string $column = 'location');
+//通过记录查询
+$service->queryDistance(float $lat = 23.23211, float $lng = 111.23123, float $maxDistance = 50,string $column = 'location')
 ```
 
 ## 数据结构
