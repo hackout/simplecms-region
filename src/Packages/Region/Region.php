@@ -6,11 +6,11 @@ use Illuminate\Support\Collection;
 
 class Region
 {
-    protected ?Collection $regions = null;
+    protected Collection $regions;
 
     public function __construct(protected string $region_path)
     {
-
+        $this->regions = new Collection([]);
     }
 
     protected function loadRegions(): void
