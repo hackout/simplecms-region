@@ -9,11 +9,13 @@ class Point implements CastsAttributes
 
     public function get($model, $key, $value, $attributes)
     {
-        return explode(' ', substr($value, 6, -1));
+        $srid = $attributes ? head($attributes) : '4326';
+        return explode(' ', substr($value, 6, (2 + strlen($srid)) * -1));
     }
 
     public function set($model, $key, $value, $attributes)
     {
-        return DB::raw("ST_GeomFromText('POINT($value[0] $value[1])',4326)");
+        $srid = $attributes ? head($attributes) : '4326';
+        return DB::raw("ST_GeomFromText('POINT($value[0] $value[1])',$srid)");
     }
 }
