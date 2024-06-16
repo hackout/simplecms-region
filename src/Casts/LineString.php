@@ -22,6 +22,6 @@ class LineString implements CastsAttributes
         $array = Arr::map($lineStrings, function ($rs) {
             return Arr::join($rs, ' ');
         });
-        return DB::raw("LINESTRING(" . Arr::join($array, ',') . ")");
+        return DB::raw("ST_GeomFromText('LINESTRING(" . Arr::join($array, ',') . ")',4326)");
     }
 }
