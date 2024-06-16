@@ -38,6 +38,21 @@ distance($lat1,$lng1,$lat2,$lng2);
 $service->distance($lat1,$lng1,$maxDistance,$latKey,$lngKey);
 ```
 
+### Casts
+
+```php
+use SimpleCMS\Region\Casts\Point; 
+use SimpleCMS\Region\Casts\LineString; 
+use SimpleCMS\Region\Casts\Polygon; 
+
+public $casts = [
+    'geo' => Point::class,
+    'geo' => LineString::class,
+    'geo' => Polygon::class
+];
+```
+
+
 ## SimpleCMS
 
 请先加载simplecms/framework
