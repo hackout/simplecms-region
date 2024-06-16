@@ -84,12 +84,12 @@ class Region
      *
      * @author Dennis Lui <hackout@vip.qq.com>
      * @param  string $code
-     * @return Collection
+     * @return RegionModel
      */
     public function findRegion(string $code)
     {
         $this->loadRegions();
-        return $this->regions->flatten()->values();
+        return $this->regions->flatten()->values()->filter(fn(RegionModel $region)=>$region->code == $code)->first();
     }
 
     /**
