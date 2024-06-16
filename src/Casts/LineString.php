@@ -11,7 +11,7 @@ class LineString implements CastsAttributes
     public function get($model, $key, $value, $attributes)
     {
         $srid = $attributes ? head($attributes) : '4326';
-        $array = explode(',', substr($value, 11, (2 + strlen($srid)) * -1));
+        $array = explode(',', substr($value, 11, (4 + strlen($srid)) * -1));
         return Arr::map($array, function ($rs) {
             return explode(" ", $rs);
         });
