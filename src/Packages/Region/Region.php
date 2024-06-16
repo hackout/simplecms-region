@@ -80,6 +80,19 @@ class Region
     }
 
     /**
+     * 查找地区
+     *
+     * @author Dennis Lui <hackout@vip.qq.com>
+     * @param  string $code
+     * @return Collection
+     */
+    public function findRegion(string $code)
+    {
+        $this->loadRegions();
+        return $this->regions->flatten()->values();
+    }
+
+    /**
      * 获取下级城市
      *
      * @author Dennis Lui <hackout@vip.qq.com>
