@@ -9,7 +9,7 @@ class Point implements CastsAttributes
 
     public function get($model, $key, $value, $attributes)
     {
-        return explode(',', substr($value, 6, -1));
+        return explode(' ', substr($value, 6, -1));
     }
 
     public function set($model, $key, $value, $attributes)
