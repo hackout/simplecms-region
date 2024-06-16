@@ -9,8 +9,15 @@ class Point implements CastsAttributes
 
     public function get($model, $key, $value, $attributes)
     {
-        $srid = $attributes ? head($attributes) : '4326';
-        return explode(' ', substr($value, 6, (4 + strlen($srid)) * -1));
+        if (empty($value)) {
+            return null;
+        }
+        
+        $value = bin2hex($value);
+
+        $value = unpack("x/x/x/x/corder/Ltype/dlat/dlon", pack("H*", $value));
+
+        return [$value['lat'], $value['lon']];
     }
 
     public function set($model, $key, $value, $attributes)
