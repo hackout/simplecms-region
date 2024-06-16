@@ -89,7 +89,35 @@ class Region
     public function findRegion(string $code)
     {
         $this->loadRegions();
-        return $this->regions->flatten()->values()->filter(fn(RegionModel $region)=>$region->code == $code)->first();
+        $newRegions = collect([]);
+        $this->regions->each(function(RegionModel $region) use ($newRegions){
+            $newRegions->add($this->flatten($region));
+        });
+        return $newRegions->flatten(10)->values()->filter(fn(RegionModel $region)=>$region->code == $code)->first();
+    }
+
+    /**
+     * 平铺数组
+     *
+     * @author Dennis Lui <hackout@vip.qq.com>
+     * @return array<int,RegionModel>
+     * 
+     */
+    protected function flatten(RegionModel $region):array
+    {
+        $children = $region->children;
+        $region->children = collect();
+        $newArray = [
+            $region
+        ];
+        if($children)
+        {
+            foreach($children as $child)
+            {
+                $newArray[] = $this->flatten($child);
+            }
+        }
+        return $newArray;
     }
 
     /**
