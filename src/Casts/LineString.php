@@ -36,7 +36,7 @@ class LineString implements CastsAttributes
     {
         $srid = 4326;
         $array = Arr::map($value, function ($rs) {
-            return Arr::join($rs, ' ');
+            return Arr::join(array_reverse($rs), ' ');
         });
         return DB::raw("ST_GeomFromText('LINESTRING(" . Arr::join($array, ',') . ")',$srid)");
     }
