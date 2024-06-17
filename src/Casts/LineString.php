@@ -22,7 +22,7 @@ class LineString implements CastsAttributes
             list($lat, $lon) = array_map(function ($coord) {
                 return hexdec($coord);
             }, str_split($pair, 8));
-            
+
             $lon = $lon > 2147483647 ? $lon - 4294967296 : $lon;
             $lat = $lat > 2147483647 ? $lat - 4294967296 : $lat;
 
@@ -35,8 +35,7 @@ class LineString implements CastsAttributes
     public function set($model, $key, $value, $attributes)
     {
         $srid = 4326;
-        $lineStrings = array_chunk($value, 2);
-        $array = Arr::map($lineStrings, function ($rs) {
+        $array = Arr::map($value, function ($rs) {
             return Arr::join($rs, ' ');
         });
         return DB::raw("ST_GeomFromText('LINESTRING(" . Arr::join($array, ',') . ")',$srid)");
