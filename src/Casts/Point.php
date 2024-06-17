@@ -12,7 +12,7 @@ class Point implements CastsAttributes
         if (empty($value)) {
             return null;
         }
-        
+
         $value = bin2hex($value);
 
         $value = unpack("x/x/x/x/corder/Ltype/dlat/dlon", pack("H*", $value));

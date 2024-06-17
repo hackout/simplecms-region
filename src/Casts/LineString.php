@@ -10,26 +10,24 @@ class LineString implements CastsAttributes
 
     public function get($model, $key, $value, $attributes)
     {
-        if ($value === null || strlen($value) < 21) {
+        $wkt = DB::select("SELECT ST_AsText('$value') as wkt")[0]->wkt;
+
+        if (empty($wkt)) {
             return null;
         }
 
-        $data = unpack('H*', $value);
-        $data = array_shift($data);
+        $pointString = str_replace(['LINESTRING(', ')'], '', $wkt);
 
-        $pairs = str_split(substr($data, 8), 16);
-        $points = array_map(function ($pair) {
-            list($lat, $lon) = array_map(function ($coord) {
-                return hexdec($coord);
-            }, str_split($pair, 8));
+        $points = explode(',', $pointString);
+        
+        $decoded = array_map(function ($point) {
+            $_value = array_reverse(explode(' ', trim($point)));
+            return [(float) $_value[0],(float) $_value[1]];
+        }, $points);
 
-            $lon = $lon > 2147483647 ? $lon - 4294967296 : $lon;
-            $lat = $lat > 2147483647 ? $lat - 4294967296 : $lat;
+        return $decoded;
 
-            return [$lat / 10000000, $lon / 10000000];
-        }, $pairs);
 
-        return $points;
     }
 
     public function set($model, $key, $value, $attributes)
