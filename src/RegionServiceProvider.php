@@ -9,13 +9,6 @@ use SimpleCMS\Region\Services\DistanceService;
 
 class RegionServiceProvider extends ServiceProvider
 {
-    /**
-     * Register services.
-     */
-    public function register(): void
-    {
-
-    }
 
     /**
      * Bootstrap services.
@@ -40,9 +33,9 @@ class RegionServiceProvider extends ServiceProvider
                 $distanceService = new DistanceService;
                 return $distanceService->queryDistance($service, $lat, $lng, $maxDistance, $geoColumn);
             });
-            SimpleService::macro('selectDistance', function (SimpleService $service, float $lat, float $lng, string $geoColumn) {
+            SimpleService::macro('selectDistance', function (SimpleService $service, float $lat, float $lng, string $geoColumn, string $alias) {
                 $distanceService = new DistanceService;
-                return $distanceService->selectDistance($service, $lat, $lng, $geoColumn);
+                return $distanceService->selectDistance($service, $lat, $lng, $geoColumn, $alias);
             });
         }
     }
@@ -75,7 +68,7 @@ class RegionServiceProvider extends ServiceProvider
      */
     protected function loadFacades(): void
     {
-        $this->app->bind('region', fn() => new \SimpleCMS\Region\Packages\Region\Region(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '/data/cities.json'));
+        $this->app->bind('region', fn () => new \SimpleCMS\Region\Packages\Region\Region(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '/data/cities.json'));
     }
 
 

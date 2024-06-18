@@ -16,9 +16,9 @@ class DistanceService
      * @param  string $column
      * @return string
      */
-    protected function distanceRaw(float $lat, float $lng,string $column = 'location'):string
+    protected function distanceRaw(float $lat, float $lng, string $column = 'location'): string
     {
-        return "ST_Distance_Sphere($column,ST_GeomFromText('POINT($lng $lat)',4326)) AS distance";
+        return "ST_Distance_Sphere($column,ST_GeomFromText('POINT($lng $lat)',4326))";
     }
 
     /**
@@ -31,10 +31,10 @@ class DistanceService
      * @param  string        $column
      * @return SimpleService
      */
-    public function selectDistance(SimpleService $service, float $lat, float $lng,string $column = 'location'):SimpleService
+    public function selectDistance(SimpleService $service, float $lat, float $lng, string $column = 'location', string $alias = 'distance'): SimpleService
     {
-        $distanceRaw = $this->distanceRaw($lat,$lng,$column);
-        $service->setSelectRaw($distanceRaw);
+        $distanceRaw = $this->distanceRaw($lat, $lng, $column);
+        $service->setSelectRaw($distanceRaw . ' AS ' . $alias);
         return $service;
     }
 
@@ -49,10 +49,10 @@ class DistanceService
      * @param  string        $column
      * @return SimpleService
      */
-    public function queryDistance(SimpleService $service, float $lat, float $lng, float $maxDistance = 50,string $column = 'location'):SimpleService
+    public function queryDistance(SimpleService $service, float $lat, float $lng, float $maxDistance = 50, string $column = 'location'): SimpleService
     {
-        $this->selectDistance($service,$lat,$lng,$column);
-        $distanceRaw = $this->distanceRaw($lat,$lng,$column);
+        $this->selectDistance($service, $lat, $lng, $column);
+        $distanceRaw = $this->distanceRaw($lat, $lng, $column);
         $service->appendQuery([
             [
                 function ($query) use ($distanceRaw, $maxDistance) {
