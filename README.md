@@ -52,7 +52,6 @@ public $casts = [
 ];
 ```
 
-
 ## SimpleCMS
 
 请先加载simplecms/framework

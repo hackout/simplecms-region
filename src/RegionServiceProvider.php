@@ -29,9 +29,13 @@ class RegionServiceProvider extends ServiceProvider
     protected function addService(): void
     {
         if (class_exists('SimpleCMS\Framework\Services\SimpleService')) {
-            SimpleService::macro('distance', function (SimpleService $service, float $lat, float $lng, float $maxDistance = 50, $latKey = 'lat', $lngKey = 'lng') {
-                $distanceService = new DistanceService($latKey, $lngKey);
-                return $distanceService->queryDistance($service, $lat, $lng, $maxDistance);
+            SimpleService::macro('queryDistance', function (SimpleService $service, float $lat, float $lng, float $maxDistance = 50, string $geoColumn) {
+                $distanceService = new DistanceService;
+                return $distanceService->queryDistance($service, $lat, $lng, $maxDistance, $geoColumn);
+            });
+            SimpleService::macro('selectDistance', function (SimpleService $service, float $lat, float $lng, string $geoColumn) {
+                $distanceService = new DistanceService;
+                return $distanceService->selectDistance($service, $lat, $lng, $geoColumn);
             });
         }
     }
