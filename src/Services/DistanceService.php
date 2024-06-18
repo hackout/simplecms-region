@@ -18,7 +18,7 @@ class DistanceService
      */
     protected function distanceRaw(float $lat, float $lng,string $column = 'location'):string
     {
-        return "ST_Distance_Sphere($column, ST_SetSRID(ST_MakePoint($lng, $lat), 4326)) AS distance";
+        return "ST_Distance_Sphere($column,ST_GeomFromText('POINT($lng $lat)',4326)) AS distance";
     }
 
     /**
