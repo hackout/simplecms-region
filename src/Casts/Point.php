@@ -16,6 +16,14 @@ class Point implements CastsAttributes
         if (empty($value)) {
             return null;
         }
+        if(!is_string($value))
+        {
+            $value = bin2hex($value);
+    
+            $value = unpack("x/x/x/x/corder/Ltype/dlat/dlon", pack("H*", $value));
+    
+            return [(float) $value['lat'],(float) $value['lon']];
+        }
         $pointString = str_replace(['POINT(', ')'], '', $value);
         $_value = array_reverse(explode(' ', trim($pointString)));
 

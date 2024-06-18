@@ -17,6 +17,13 @@ class LineString implements CastsAttributes
         if (empty($value)) {
             return null;
         }
+        if(!is_string($value))
+        {
+            $value = DB::select("SELECT ST_AsText('$value') as wkt")[0]->wkt;
+            if (empty($value)) {
+                return null;
+            }
+        }
 
         $pointString = str_replace(['LINESTRING(', ')'], '', $value);
 
