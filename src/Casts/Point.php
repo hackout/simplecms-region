@@ -6,18 +6,20 @@ use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 
 class Point implements CastsAttributes
 {
+    public static function select($field):string
+    {
+        return "ST_AsText($field) as $field";
+    }
 
     public function get($model, $key, $value, $attributes)
     {
         if (empty($value)) {
             return null;
         }
+        $pointString = str_replace(['POINT(', ')'], '', $value);
+        $_value = array_reverse(explode(' ', trim($pointString)));
 
-        $value = bin2hex($value);
-
-        $value = unpack("x/x/x/x/corder/Ltype/dlat/dlon", pack("H*", $value));
-
-        return [$value['lat'], $value['lon']];
+        return [$_value[0], $_value[1]];
     }
 
     public function set($model, $key, $value, $attributes)
