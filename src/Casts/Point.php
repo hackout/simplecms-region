@@ -19,7 +19,7 @@ class Point implements CastsAttributes
         $pointString = str_replace(['POINT(', ')'], '', $value);
         $_value = array_reverse(explode(' ', trim($pointString)));
 
-        return [$_value[0], $_value[1]];
+        return [(float) $_value[0],(float) $_value[1]];
     }
 
     public function set($model, $key, $value, $attributes)
