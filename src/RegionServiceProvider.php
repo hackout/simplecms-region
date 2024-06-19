@@ -15,6 +15,7 @@ class RegionServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->loadedHelpers();
         $this->loadFacades();
         $this->addService();
         $this->addMacro();
