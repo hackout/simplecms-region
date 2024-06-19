@@ -10,7 +10,7 @@
  * @param  float   $lon2 经度2
  * @return float
  */
-function captcha_check(float $lat1, float $lon1, float $lat2, float $lon2): float
+function distance(float $lat1, float $lon1, float $lat2, float $lon2): float
 {
     $earthRadius = 6371;
 
