@@ -4,8 +4,8 @@ namespace SimpleCMS\Region;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\ServiceProvider;
-use SimpleCMS\Framework\Services\SimpleService;
 use SimpleCMS\Region\Services\DistanceService;
+use SimpleCMS\Framework\Services\SimpleService;
 
 class RegionServiceProvider extends ServiceProvider
 {
