@@ -19,7 +19,10 @@ class LineString implements CastsAttributes
         }
         if(!is_string($value) || !mb_check_encoding($value, 'UTF-8'))
         {
-            $value = DB::select("SELECT ST_AsText('$value') as wkt")[0]->wkt;
+            $tableName = $model->getTable();
+            $keyName = $model->getKeyName();
+            $keyValue = $model->$keyName;
+            $value = DB::select("SELECT ST_AsText($key) as $key FROM $tableName WHERE $keyName = '$keyValue'")[0]->$key;
             if (empty($value)) {
                 return null;
             }
