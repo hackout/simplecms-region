@@ -1,0 +1,35 @@
+{
+    "name": "simplecms/region",
+    "description": "中国地理",
+    "keywords": [
+        "laravel",
+        "region",
+        "simplecms"
+    ],
+    "version": "1.0.4",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "SimpleCMS\\Region\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "hackout",
+            "email": "hackout@vip.qq.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "SimpleCMS\\Region\\RegionServiceProvider"
+            ],
+            "aliases": {
+                "Region": "SimpleCMS\\Region\\Facades\\Region"
+            }
+        }
+    }
+}
