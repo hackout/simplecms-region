@@ -69,7 +69,7 @@ class RegionServiceProvider extends ServiceProvider
      */
     protected function loadFacades(): void
     {
-        $this->app->bind('region', fn() => new \SimpleCMS\Region\Packages\Region\Region(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '/data/cities.json'));
+        $this->app->bind('region', fn() => new \SimpleCMS\Region\Packages\Region(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '/data/cities.json'));
     }
 
 

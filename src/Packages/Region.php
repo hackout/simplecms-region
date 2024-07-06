@@ -1,5 +1,5 @@
 <?php
-namespace SimpleCMS\Region\Packages\Region;
+namespace SimpleCMS\Region\Packages;
 
 
 use Illuminate\Support\Collection;
