@@ -204,7 +204,7 @@ class RegionModel implements \JsonSerializable
 
     /**
      * jsonSerialize
-     * @return array<string,null|string|float|int|array<string,null|string|float|int|mixed>>
+     * @return mixed
      */
     public function jsonSerialize()
     {

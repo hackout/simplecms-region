@@ -2,8 +2,10 @@
 
 namespace SimpleCMS\Region\Services;
 
-use SimpleCMS\Framework\Services\SimpleService;
 
+/**
+ * @package simplecms/framework
+ */
 class DistanceService
 {
 
@@ -25,13 +27,13 @@ class DistanceService
      * 增加距离Select
      *
      * @author Dennis Lui <hackout@vip.qq.com>
-     * @param  SimpleService $service
+     * @param  \SimpleCMS\Framework\Services\SimpleService $service
      * @param  float         $lat
      * @param  float         $lng
      * @param  string        $column
-     * @return SimpleService
+     * @return \SimpleCMS\Framework\Services\SimpleService
      */
-    public function selectDistance(SimpleService $service, float $lat, float $lng, string $column = 'location', string $alias = 'distance'): SimpleService
+    public function selectDistance(\SimpleCMS\Framework\Services\SimpleService $service, float $lat, float $lng, string $column = 'location', string $alias = 'distance'): \SimpleCMS\Framework\Services\SimpleService
     {
         $distanceRaw = $this->distanceRaw($lat, $lng, $column);
         $service->setSelectRaw($distanceRaw . ' AS ' . $alias);
@@ -42,14 +44,14 @@ class DistanceService
      * 按距离查询
      *
      * @author Dennis Lui <hackout@vip.qq.com>
-     * @param  SimpleService $service
+     * @param  \SimpleCMS\Framework\Services\SimpleService $service
      * @param  float         $lat
      * @param  float         $lng
      * @param  integer       $maxDistance
      * @param  string        $column
-     * @return SimpleService
+     * @return \SimpleCMS\Framework\Services\SimpleService
      */
-    public function queryDistance(SimpleService $service, float $lat, float $lng, float $maxDistance = 50, string $column = 'location'): SimpleService
+    public function queryDistance(\SimpleCMS\Framework\Services\SimpleService $service, float $lat, float $lng, float $maxDistance = 50, string $column = 'location'): \SimpleCMS\Framework\Services\SimpleService
     {
         $this->selectDistance($service, $lat, $lng, $column);
         $distanceRaw = $this->distanceRaw($lat, $lng, $column);
