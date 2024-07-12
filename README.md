@@ -8,9 +8,9 @@ English | [简体中文](./README_zhCN.md)
 
 ## Requirements
 
-- PHP >= 8.0
-- MySql >= 5.7
-- [Laravel/Framework](https://packagist.org/packages/laravel/framework) >= 9.0
+- PHP >= 8.2
+- MySql >= 8.0
+- [Laravel/Framework](https://packagist.org/packages/laravel/framework) >= 11.0
 
 ## Installation
 
