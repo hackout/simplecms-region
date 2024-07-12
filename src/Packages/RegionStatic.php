@@ -55,5 +55,10 @@ class RegionStatic
      * @var float|null
      */
     public float $lat;
-    
+
+    /**
+     * 行政区划层级
+     * @var int
+     */
+    public int $deep = 0;
 }
