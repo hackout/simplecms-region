@@ -4,6 +4,9 @@ namespace SimpleCMS\Region\Packages;
 
 use Illuminate\Support\Collection;
 
+/**
+ * 地理模块
+ */
 class Region
 {
     protected Collection $regions;
@@ -26,7 +29,7 @@ class Region
         }
     }
 
-    protected function convertRegion(array $region): RegionModel
+    protected function convertRegion(array $region, ?RegionModel $parent = null): RegionModel
     {
         $obj = new RegionModel();
         $obj->name = array_key_exists('name', $region) && $region['name'] ? trim($region['name']) : null;
@@ -36,9 +39,11 @@ class Region
         $obj->zip = array_key_exists('zip', $region) && $region['zip'] ? trim($region['zip']) : null;
         $obj->lng = array_key_exists('lng', $region) && $region['lng'] ? trim($region['lng']) : 0;
         $obj->lat = array_key_exists('lat', $region) && $region['lat'] ? trim($region['lat']) : 0;
+        $obj->parent = $parent;
+
         if (array_key_exists('children', $region) && $region['children']) {
             foreach ($region['children'] as $child) {
-                $obj->children->push($this->convertRegion($child));
+                $obj->children->push($this->convertRegion($child, $obj));
             }
         }
         return $obj;
@@ -90,10 +95,10 @@ class Region
     {
         $this->loadRegions();
         $newRegions = collect([]);
-        $this->regions->each(function(RegionModel $region) use ($newRegions){
+        $this->regions->each(function (RegionModel $region) use ($newRegions) {
             $newRegions->add($this->flatten($region));
         });
-        return $newRegions->flatten(10)->values()->filter(fn(RegionModel $region)=>$region->code == $code)->first();
+        return $newRegions->flatten(10)->values()->filter(fn(RegionModel $region) => $region->code == $code)->first();
     }
 
     /**
@@ -103,17 +108,15 @@ class Region
      * @return array<int,RegionModel>
      * 
      */
-    protected function flatten(RegionModel $region):array
+    protected function flatten(RegionModel $region): array
     {
         $children = $region->children;
         $region->children = collect();
         $newArray = [
             $region
         ];
-        if($children)
-        {
-            foreach($children as $child)
-            {
+        if ($children) {
+            foreach ($children as $child) {
                 $newArray[] = $this->flatten($child);
             }
         }

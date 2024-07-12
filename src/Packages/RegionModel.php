@@ -73,6 +73,12 @@ class RegionModel implements \JsonSerializable
      */
     public Collection $children;
 
+    /**
+     * 上级
+     * @var RegionModel|null
+     */
+    protected ?RegionModel $parent = null;
+
     public function __construct()
     {
         $this->children = collect();
@@ -142,5 +148,14 @@ class RegionModel implements \JsonSerializable
     public function __toString(): string
     {
         return json_encode($this->toArray());
+    }
+
+    /**
+     * 获取上级
+     * @return RegionModel|null
+     */
+    public function getParent(): ?RegionModel
+    {
+        return $this->parent;
     }
 }
