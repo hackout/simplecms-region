@@ -77,7 +77,7 @@ class RegionModel implements \JsonSerializable
      * 上级
      * @var RegionModel|null
      */
-    protected ?RegionModel $parent = null;
+    public ?RegionModel $parent = null;
 
     public function __construct()
     {
