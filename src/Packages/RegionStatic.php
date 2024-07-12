@@ -55,4 +55,5 @@ class RegionStatic
      * @var float|null
      */
     public float $lat;
+    
 }
