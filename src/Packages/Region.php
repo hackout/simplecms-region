@@ -38,8 +38,8 @@ class Region
         $obj->code = array_key_exists('code', $region) && $region['code'] ? trim($region['code']) : null;
         $obj->area = array_key_exists('area', $region) && $region['area'] ? trim($region['area']) : null;
         $obj->zip = array_key_exists('zip', $region) && $region['zip'] ? trim($region['zip']) : null;
-        $obj->lng = array_key_exists('lng', $region) && $region['lng'] ? trim($region['lng']) : null;
-        $obj->lat = array_key_exists('lat', $region) && $region['lat'] ? trim($region['lat']) : null;
+        $obj->lng = array_key_exists('lng', $region) && $region['lng'] ? (float) $region['lng'] : 0;
+        $obj->lat = array_key_exists('lat', $region) && $region['lat'] ? (float) $region['lat'] : 0;
         $obj->parent = $parent;
 
         if (array_key_exists('children', $region) && $region['children']) {
