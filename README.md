@@ -1,45 +1,49 @@
-# 中国地理信息
+# SimpleCMS/Laravel Region Component
 
-一个基于国家地理的地理信息表
+📦 A SimpleCMS/Laravel component for Chinese national geographic information based on information published by the National Bureau of Statistics. 
 
-## 环境配置要求
+English | [简体中文](./README_zhCN.md)
 
-1. PHP 8.0+
+[![Latest Stable Version](https://poser.pugx.org/simplecms/region/v/stable.svg)](https://packagist.org/packages/simplecms/region) [![Latest Unstable Version](https://poser.pugx.org/simplecms/region/v/unstable.svg)](https://packagist.org/packages/simplecms/region) [![Code Coverage](https://scrutinizer-ci.com/g/overtrue/easy-sms/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/hackout/simplecms-region/?branch=master) [![Total Downloads](https://poser.pugx.org/simplecms/region/downloads)](https://packagist.org/packages/simplecms/region) [![License](https://poser.pugx.org/simplecms/region/license)](https://packagist.org/packages/simplecms/region)
 
-## 自定义地理数据
+## Requirements
 
-在```.env```增加以下代码:
+- PHP >= 8.0
+- MySql >= 5.7
+- [Laravel/Framework](https://packagist.org/packages/laravel/framework) >= 9.0
 
-```bash
-REGION_PATH='你的地理JSON位置' #绝对位置
-```
-
-## 安装
+## Installation
 
 ```bash
 composer require simplecms/region
 ```
 
-## 使用方法
+## Usage
+
+Includes a distance method.
+
+### Get Geographic List
 
 ```php
 use SimpleCMS\Region\Facades\Region; 
-//获取所有城市
-return Region::getAll();
-//通过代码查询城市
-$city = Region::findRegion(string $code = '行政标识');
-$city->getParent(); //上级
-//查询所有下级
-return Region::getAllChildren(string $code = '行政标识');
-//带深度查询
-return Region::getChildren(string $code, int $deep = 0);
-//坐标计算距离
-distance($lat1,$lng1,$lat2,$lng2);
-//SimpleCMS service
-$service->distance($lat1,$lng1,$maxDistance,$latKey,$lngKey);
+Region::getAll(); // Returns the complete list
 ```
 
-### Casts
+### Query and Check
+
+```php
+use SimpleCMS\Region\Facades\Region; 
+Region::findRegion(string $code = 'Administrative Identifier'); // Query geographic information
+Region::getAllChildren(string $code = 'Administrative Identifier'); // Query all children
+Region::getChildren(string $code, int $deep = 0); // Query down with depth
+Region::checkName(string $name); // Check name validity
+Region::checkCode(string $code); // Check validity of administrative code
+Region::checkArea(string $area); // Check area code validity
+Region::checkNumber(string $number); // Check phone number validity
+Region::checkZip(string $zip); // Check zip code validity supports full zip code
+```
+
+### Laravel Model Casts
 
 ```php
 use SimpleCMS\Region\Casts\Point; 
@@ -53,46 +57,77 @@ public $casts = [
 ];
 ```
 
-## SimpleCMS
-
-请先加载simplecms/framework
-
-### 服务调用方法
+### Helpers
 
 ```php
-use SimpleService;
-
-//获取距离
-$service->selectDistance(float $lat = 23.23211, float $lng = 111.23123,string $column = 'location');
-//通过记录查询
-$service->queryDistance(float $lat = 23.23211, float $lng = 111.23123, float $maxDistance = 50,string $column = 'location')
+distance($lat1,$lng1,$lat2,$lng2); // Calculate distance between two locations
 ```
 
-## 数据结构
+### Validation
 
-数据结构参考遵循以下格式:
+```php
+$rules = [
+    'region' => 'region_code', // Check administrative code
+    'region_name' => 'region_name', // Check geographic name
+    'region_zip' => 'region_zip', // Check zip code
+    'region_area' => 'region_area', // Check area code
+    'region_number' => 'region_number', // Check phone number (landline with area code)
+];
+$messages = [
+    'region.region_code' => 'Incorrect administrative code',
+    'region_name.region_name' => 'Incorrect geographic name',
+    'region_zip.region_zip' => 'Incorrect zip code',
+    'region_area.region_area' => 'Incorrect area code',
+    'region_number.region_number' => 'Incorrect area code',
+];
+$data = $request->validate($rules,$messages);
+```
+
+## Custom Geographic Data
+
+You can customize your own data using the ```.env``` file.
+
+### Modify Configuration File Path
+
+Add the following code to the ```.env``` file:
+
+```bash
+BANK_PATH='Your Geographic JSON file address' #Absolute location
+```
+
+### JSON Data Format
+
+The data structure should follow the format below:
 
 ```bash
 {
-    "name": "名称",
-    "short": "缩写/简称/短名",
-    "code": "唯一地理标识",
-    "area": "电话区号",
-    "zip": "邮政编码",
-    "lng": 100.00000, #经度
-    "lat": 32.00000, #纬度
+    "name": "Name",
+    "short": "Abbreviation/Short Name",
+    "code": "Unique Geographic Identifier",
+    "area": "Area Code",
+    "zip": "Postal Code",
+    "lng": 100.00000, #Longitude
+    "lat": 32.00000, #Latitude
     "children": [
-        ....#跟上面结构一样
+        ....#Same structure as above
     ]
 }
 ```
 
-## Facades
+## SimpleCMS Extension
+
+Please load ```simplecms/framework``` first.
+
+### Service Calls
 
 ```php
-use SimpleCMS\Region\Facades\Region; #地理位置 
+use SimpleService;
+// Get distance
+$service->selectDistance(float $lat = 23.23211, float $lng = 111.23123,string $column = 'location');
+// Query by record
+$service->queryDistance(float $lat = 23.23211, float $lng = 111.23123, float $maxDistance = 50,string $column = 'location')
 ```
 
-## 其他说明
+## License
 
-更多操作参考IDE提示
+MIT

@@ -4,8 +4,14 @@ namespace SimpleCMS\Region;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Validator;
 use SimpleCMS\Region\Services\DistanceService;
 use SimpleCMS\Framework\Services\SimpleService;
+use SimpleCMS\Region\Validation\Rule\RegionZipRule;
+use SimpleCMS\Region\Validation\Rule\RegionAreaRule;
+use SimpleCMS\Region\Validation\Rule\RegionCodeRule;
+use SimpleCMS\Region\Validation\Rule\RegionNameRule;
+use SimpleCMS\Region\Validation\Rule\RegionNumberRule;
 
 class RegionServiceProvider extends ServiceProvider
 {
@@ -15,10 +21,41 @@ class RegionServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->loadedValidator();
         $this->loadedHelpers();
         $this->loadFacades();
         $this->addService();
         $this->addMacro();
+    }
+
+    /**
+     * 加载验证
+     *
+     * @author Dennis Lui <hackout@vip.qq.com>
+     * @return void
+     */
+    protected function loadedValidator(): void
+    {
+        Validator::extend(
+            'region_area',
+            RegionAreaRule::class
+        );
+        Validator::extend(
+            'region_code',
+            RegionCodeRule::class
+        );
+        Validator::extend(
+            'region_name',
+            RegionNameRule::class
+        );
+        Validator::extend(
+            'region_number',
+            RegionNumberRule::class
+        );
+        Validator::extend(
+            'region_zip',
+            RegionZipRule::class
+        );
     }
 
     /**

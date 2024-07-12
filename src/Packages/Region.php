@@ -13,7 +13,8 @@ class Region
 
     public function __construct(protected string $region_path)
     {
-        $this->regions = new Collection([]);
+        $this->regions = new Collection();
+        $this->loadRegions();
     }
 
     protected function loadRegions(): void
@@ -57,7 +58,6 @@ class Region
      */
     public function getAll(): Collection
     {
-        $this->loadRegions();
         return $this->regions;
     }
 
@@ -70,8 +70,6 @@ class Region
      */
     public function getAllChildren(string $code): Collection
     {
-        $this->loadRegions();
-
         $children = new Collection();
 
         foreach ($this->regions as $region) {
@@ -85,20 +83,85 @@ class Region
     }
 
     /**
+     * 检查名称有效性
+     *
+     * @param string $name
+     * @return bool
+     */
+    public function checkName(string $name): bool
+    {
+        $regions = $this->getFlattenData();
+        return $regions->contains(fn(RegionModel $region) => $region->checkName($name));
+    }
+
+    /**
+     * 检查行政代码有效性
+     *
+     * @param string $code
+     * @return bool
+     */
+    public function checkCode(string $code): bool
+    {
+        $regions = $this->getFlattenData();
+        return $regions->contains(fn(RegionModel $region) => $region->checkCode($code));
+    }
+
+    /**
+     * 检查区号有效性
+     *
+     * @param string $area
+     * @return bool
+     */
+    public function checkArea(string $area): bool
+    {
+        $regions = $this->getFlattenData();
+        return $regions->contains(fn(RegionModel $region) => $region->checkArea($area));
+    }
+
+    /**
+     * 检查电话号码有效性
+     *
+     * @param string $number
+     * @return bool
+     */
+    public function checkNumber(string $number): bool
+    {
+        $regions = $this->getFlattenData();
+        return $regions->contains(fn(RegionModel $region) => $region->checkNumber($number));
+    }
+
+    /**
+     * 检查邮编有效性
+     *
+     * @param string $zip
+     * @return bool
+     */
+    public function checkZip(string $zip): bool
+    {
+        $regions = $this->getFlattenData();
+        return $regions->contains(fn(RegionModel $region) => $region->checkZip($zip));
+    }
+
+    protected function getFlattenData(): Collection
+    {
+        $newRegions = new Collection();
+        $this->regions->each(function (RegionModel $region) use ($newRegions) {
+            $newRegions->add($this->flatten($region));
+        });
+        return $newRegions->flatten(10);
+    }
+
+    /**
      * 查找地区
      *
      * @author Dennis Lui <hackout@vip.qq.com>
      * @param  string $code
-     * @return RegionModel
+     * @return RegionModel|null
      */
-    public function findRegion(string $code)
+    public function findRegion(string $code): ?RegionModel
     {
-        $this->loadRegions();
-        $newRegions = collect([]);
-        $this->regions->each(function (RegionModel $region) use ($newRegions) {
-            $newRegions->add($this->flatten($region));
-        });
-        return $newRegions->flatten(10)->values()->filter(fn(RegionModel $region) => $region->code == $code)->first();
+        $regions = $this->getFlattenData();
+        return $regions->first(fn(RegionModel $region) => $region->code == $code);
     }
 
     /**
@@ -111,7 +174,7 @@ class Region
     protected function flatten(RegionModel $region): array
     {
         $children = $region->children;
-        $region->children = collect();
+        $region->children = new Collection();
         $newArray = [
             $region
         ];
@@ -133,8 +196,6 @@ class Region
      */
     public function getChildren(string $code, int $deep = 0): Collection
     {
-        $this->loadRegions();
-
         $children = new Collection();
 
         foreach ($this->regions as $region) {

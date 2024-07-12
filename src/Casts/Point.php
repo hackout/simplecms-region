@@ -6,11 +6,24 @@ use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 
 class Point implements CastsAttributes
 {
+    /**
+     * Summary of select
+     * @param mixed $field
+     * @return string
+     */
     public static function select($field): string
     {
         return "ST_AsText($field) as $field";
     }
 
+    /**
+     * Summary of get
+     * @param mixed $model
+     * @param mixed $key
+     * @param mixed $value
+     * @param mixed $attributes
+     * @return float[]|null
+     */
     public function get($model, $key, $value, $attributes)
     {
         if (empty($value)) {
@@ -31,6 +44,14 @@ class Point implements CastsAttributes
         return [(float) $_value[0], (float) $_value[1]];
     }
 
+    /**
+     * Summary of set
+     * @param mixed $model
+     * @param mixed $key
+     * @param mixed $value
+     * @param mixed $attributes
+     * @return \Illuminate\Contracts\Database\Query\Expression
+     */
     public function set($model, $key, $value, $attributes)
     {
         $srid = 4326;
