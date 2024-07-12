@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
 use SimpleCMS\Region\Services\DistanceService;
+use SimpleCMS\Framework\Services\SimpleService;
 use SimpleCMS\Region\Validation\Rule\RegionZipRule;
 use SimpleCMS\Region\Validation\Rule\RegionAreaRule;
 use SimpleCMS\Region\Validation\Rule\RegionCodeRule;
@@ -65,12 +66,12 @@ class RegionServiceProvider extends ServiceProvider
      */
     protected function addMacro(): void
     {
-        if (class_exists('SimpleCMS\Framework\Services\SimpleService')) {
-            \SimpleCMS\Framework\Services\SimpleService::macro('queryDistance', function (\SimpleCMS\Framework\Services\SimpleService $service, float $lat, float $lng, float $maxDistance = 50, string $geoColumn) {
+        if (class_exists(SimpleService::class)) {
+            SimpleService::macro('queryDistance', function (SimpleService $service, float $lat, float $lng, float $maxDistance = 50, string $geoColumn) {
                 $distanceService = new DistanceService;
                 return $distanceService->queryDistance($service, $lat, $lng, $maxDistance, $geoColumn);
             });
-            \SimpleCMS\Framework\Services\SimpleService::macro('selectDistance', function (\SimpleCMS\Framework\Services\SimpleService $service, float $lat, float $lng, string $geoColumn, string $alias) {
+            SimpleService::macro('selectDistance', function (SimpleService $service, float $lat, float $lng, string $geoColumn, string $alias) {
                 $distanceService = new DistanceService;
                 return $distanceService->selectDistance($service, $lat, $lng, $geoColumn, $alias);
             });
@@ -85,12 +86,12 @@ class RegionServiceProvider extends ServiceProvider
      */
     protected function addService(): void
     {
-        if (class_exists('SimpleCMS\Framework\Services\SimpleService')) {
-            \SimpleCMS\Framework\Services\SimpleService::macro('queryDistance', function (\SimpleCMS\Framework\Services\SimpleService $service, float $lat, float $lng, float $maxDistance = 50, string $geoColumn) {
+        if (class_exists(SimpleService::class)) {
+            SimpleService::macro('queryDistance', function (SimpleService $service, float $lat, float $lng, float $maxDistance = 50, string $geoColumn) {
                 $distanceService = new DistanceService;
                 return $distanceService->queryDistance($service, $lat, $lng, $maxDistance, $geoColumn);
             });
-            \SimpleCMS\Framework\Services\SimpleService::macro('selectDistance', function (\SimpleCMS\Framework\Services\SimpleService $service, float $lat, float $lng, string $geoColumn) {
+            SimpleService::macro('selectDistance', function (SimpleService $service, float $lat, float $lng, string $geoColumn) {
                 $distanceService = new DistanceService;
                 return $distanceService->selectDistance($service, $lat, $lng, $geoColumn);
             });

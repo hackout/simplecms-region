@@ -4,10 +4,6 @@ namespace SimpleCMS\Region\Casts;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 
-/**
- * @template TGet
- * @template TSet
- */
 class Point implements CastsAttributes
 {
     /**
@@ -27,7 +23,7 @@ class Point implements CastsAttributes
      * @param  string  $key
      * @param  mixed  $value
      * @param  array<string, mixed>  $attributes
-     * @return TGet|null
+     * @return mixed
      */
     public function get($model, $key, $value, $attributes)
     {
@@ -54,7 +50,7 @@ class Point implements CastsAttributes
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @param  string  $key
-     * @param  TSet|null  $value
+     * @param  mixed  $value
      * @param  array<string, mixed>  $attributes
      * @return mixed
      */
