@@ -8,56 +8,8 @@ use Illuminate\Support\Collection;
  *
  * @author Dennis Lui <hackout@vip.qq.com>
  */
-class RegionModel implements \JsonSerializable
+class RegionModel extends RegionStatic implements \JsonSerializable
 {
-    /**
-     * 行政名称
-     *
-     * @var string|null
-     */
-    public string $name;
-
-    /**
-     * 简称/短名
-     *
-     * @var string|null
-     */
-    public string $short;
-
-    /**
-     * 行政编码(具备唯一性)
-     *
-     * @var string|null
-     */
-    public string $code;
-
-    /**
-     * 电话区号
-     *
-     * @var string|null
-     */
-    public string $area;
-
-    /**
-     * 邮政编码
-     *
-     * @var string|null
-     */
-    public string $zip;
-
-    /**
-     * 经度(高德坐标系/GCJ-02/火星坐标)
-     *
-     * @var float|null
-     */
-    public float $lng;
-
-    /**
-     * 纬度(高德坐标系/GCJ-02/火星坐标)
-     *
-     * @var float|null
-     */
-    public float $lat;
 
     /**
      * 离中心点距离
@@ -82,6 +34,54 @@ class RegionModel implements \JsonSerializable
     public function __construct()
     {
         $this->children = collect();
+    }
+
+    /**
+     * 设置模型
+     * @param array $data
+     * @param ?RegionStatic $parent
+     * @return \SimpleCMS\Region\Packages\RegionModel
+     */
+    public function setData(array $data, ?RegionStatic $parent = null): self
+    {
+        $this->initData($data, $parent);
+        return $this;
+    }
+
+    protected function initData(array $data, ?RegionStatic $parent = null)
+    {
+        $this->name = array_key_exists('name', $data) && $data['name'] ? trim($data['name']) : null;
+        $this->short = array_key_exists('short', $data) && $data['short'] ? trim($data['short']) : null;
+        $this->code = array_key_exists('code', $data) && $data['code'] ? trim($data['code']) : null;
+        $this->area = array_key_exists('area', $data) && $data['area'] ? trim($data['area']) : null;
+        $this->zip = array_key_exists('zip', $data) && $data['zip'] ? trim($data['zip']) : null;
+        $this->lng = array_key_exists('lng', $data) && $data['lng'] ? (float) $data['lng'] : 0;
+        $this->lat = array_key_exists('lat', $data) && $data['lat'] ? (float) $data['lat'] : 0;
+        $this->parent = $parent;
+        if (array_key_exists('children', $data) && $data['children']) {
+            foreach ($data['children'] as $child) {
+                $_child = new static();
+                $_child->setData($child, $this->cloneRegion());
+                $this->children->push($_child);
+            }
+        }
+    }
+
+    /**
+     * 复制
+     * @return RegionStatic
+     */
+    protected function cloneRegion(): RegionStatic
+    {
+        $self = new static();
+        $self->name = $this->name;
+        $self->short = $this->short;
+        $self->code = $this->code;
+        $self->area = $this->area;
+        $self->zip = $this->zip;
+        $self->lng = $this->lng;
+        $self->lat = $this->lat;
+        return $self;
     }
 
     /**
@@ -222,9 +222,9 @@ class RegionModel implements \JsonSerializable
 
     /**
      * 获取上级
-     * @return RegionModel|null
+     * @return RegionStatic|null
      */
-    public function getParent(): ?RegionModel
+    public function getParent(): ?RegionStatic
     {
         return $this->parent;
     }
