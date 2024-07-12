@@ -27,7 +27,8 @@ use SimpleCMS\Region\Facades\Region;
 //获取所有城市
 return Region::getAll();
 //通过代码查询城市
-return Region::findRegion(string $code = '行政标识');
+$city = Region::findRegion(string $code = '行政标识');
+$city->getParent(); //上级
 //查询所有下级
 return Region::getAllChildren(string $code = '行政标识');
 //带深度查询
