@@ -31,17 +31,17 @@ class RegionModel extends RegionStatic implements \JsonSerializable
     /**
      * 设置模型
      * @param array $data
-     * @param int $deep
      * @param ?RegionStatic $parent
-     * @return \SimpleCMS\Region\Packages\RegionModel
+     * @return void
      */
-    public function setData(array $data, int $deep = 0, ?RegionStatic $parent = null): self
+    public function setData(array $data, ?RegionStatic $parent = null): void
     {
-        $this->initData($data, $deep, $parent);
-        return $this;
+        if ($this->deep < 5) {
+            $this->initData($data, $parent);
+        }
     }
 
-    protected function initData(array $data, int $deep = 0, ?RegionStatic $parent = null)
+    protected function initData(array $data, ?RegionStatic $parent = null)
     {
         $this->name = array_key_exists('name', $data) && $data['name'] ? trim($data['name']) : null;
         $this->short = array_key_exists('short', $data) && $data['short'] ? trim($data['short']) : null;
@@ -50,13 +50,15 @@ class RegionModel extends RegionStatic implements \JsonSerializable
         $this->zip = array_key_exists('zip', $data) && $data['zip'] ? trim($data['zip']) : null;
         $this->lng = array_key_exists('lng', $data) && $data['lng'] ? (float) $data['lng'] : 0;
         $this->lat = array_key_exists('lat', $data) && $data['lat'] ? (float) $data['lat'] : 0;
-        $this->deep = $deep;
         $this->parent = $parent;
-        if (array_key_exists('children', $data) && $data['children'] && $deep < 4) {
-            foreach ($data['children'] as $child) {
-                $_child = new static();
-                $_child->setData($child, $deep + 1, $this->cloneRegion());
-                $this->children->push($_child);
+        if ($this->deep < 4) {
+            if (array_key_exists('children', $data) && $data['children']) {
+                foreach ($data['children'] as $child) {
+                    $_child = new static();
+                    $_child->setDeep($this->deep + 1);
+                    $_child->setData($child, $this->cloneRegion());
+                    $this->children->push($_child);
+                }
             }
         }
     }

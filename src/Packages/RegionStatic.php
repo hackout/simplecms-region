@@ -61,4 +61,14 @@ class RegionStatic
      * @var int
      */
     public int $deep = 0;
+
+    /**
+     * 设置行政区划层级
+     * @param int $deep
+     * @return void
+     */
+    public function setDeep(int $deep):void
+    {
+        $this->deep = $deep;
+    }
 }

@@ -27,6 +27,7 @@ class Region
             $data = json_decode($content, true);
             foreach ($data as $region) {
                 $_region = new RegionModel();
+                $_region->setDeep(0);
                 $_region->setData($region);
                 $this->regions->push($_region);
             }
