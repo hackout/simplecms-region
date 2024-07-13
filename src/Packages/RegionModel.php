@@ -1,6 +1,7 @@
 <?php
 namespace SimpleCMS\Region\Packages;
 
+use function is_array;
 use Illuminate\Support\Collection;
 
 /**
@@ -43,22 +44,30 @@ class RegionModel extends RegionStatic implements \JsonSerializable
 
     protected function initData(array $data, ?RegionStatic $parent = null)
     {
-        $this->name = array_key_exists('name', $data) && $data['name'] ? trim($data['name']) : null;
-        $this->short = array_key_exists('short', $data) && $data['short'] ? trim($data['short']) : null;
-        $this->code = array_key_exists('code', $data) && $data['code'] ? trim($data['code']) : null;
-        $this->area = array_key_exists('area', $data) && $data['area'] ? trim($data['area']) : null;
-        $this->zip = array_key_exists('zip', $data) && $data['zip'] ? trim($data['zip']) : null;
-        $this->lng = array_key_exists('lng', $data) && $data['lng'] ? (float) $data['lng'] : 0;
-        $this->lat = array_key_exists('lat', $data) && $data['lat'] ? (float) $data['lat'] : 0;
+        $data = array_merge([
+            'name' => null,
+            'short' => null,
+            'code' => null,
+            'area' => null,
+            'zip' => null,
+            'lng' => 0,
+            'lat' => 0,
+            'children' => []
+        ], $data);
+        $this->name = trim($data['name']);
+        $this->short = trim($data['short']);
+        $this->code = trim($data['code']);
+        $this->area = trim($data['area']);
+        $this->zip = trim($data['zip']);
+        $this->lng = (float) $data['lng'];
+        $this->lat = (float) $data['lat'];
         $this->parent = $parent;
-        if ($this->deep < 4) {
-            if (array_key_exists('children', $data) && $data['children']) {
-                foreach ($data['children'] as $child) {
-                    $_child = new static();
-                    $_child->setDeep($this->deep + 1);
-                    $_child->setData($child, $this->cloneRegion());
-                    $this->children->push($_child);
-                }
+        if ($this->deep < 4 && is_array($data['children'])) {
+            foreach ($data['children'] as $child) {
+                $_child = new static();
+                $_child->setDeep($this->deep + 1);
+                $_child->setData($child, $this->cloneRegion());
+                $this->children->push($_child);
             }
         }
     }
