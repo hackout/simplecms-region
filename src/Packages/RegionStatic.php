@@ -71,4 +71,13 @@ class RegionStatic
     {
         $this->deep = $deep;
     }
+
+    /**
+     * 获取写入参数
+     * @return array
+     */
+    public function getAttributes():array
+    {
+        return ['name','short','code','area','zip','lng','lat'];
+    }
 }

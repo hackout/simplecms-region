@@ -82,40 +82,26 @@ class RegionModel extends RegionStatic implements \JsonSerializable
     protected function cloneRegion(): RegionStatic
     {
         $self = new static();
-        $self->name = $this->name;
-        $self->short = $this->short;
-        $self->code = $this->code;
-        $self->area = $this->area;
-        $self->zip = $this->zip;
-        $self->lng = $this->lng;
-        $self->lat = $this->lat;
+        foreach ($this->getAttributes() as $keyName) {
+            $self->$keyName = $this->$keyName;
+        }
         return $self;
     }
 
+    /**
+     * 参数赋值
+     * @param string $keyName
+     * @param mixed $value
+     * @return void
+     */
     protected function setValue(string $keyName, $value): void
     {
-        switch ($keyName) {
-            case 'name':
-                $this->name = (string) $value;
-                break;
-            case 'short':
-                $this->short = (string) $value;
-                break;
-            case 'code':
-                $this->code = (string) $value;
-                break;
-            case 'area':
-                $this->area = (string) $value;
-                break;
-            case 'zip':
-                $this->zip = (string) $value;
-                break;
-            case 'lng':
-                $this->lng = (float) $value;
-                break;
-            case 'lat':
-                $this->lat = (float) $value;
-                break;
+        if (in_array($keyName, $this->getAttributes())) {
+            if ($keyName == 'lng' || $keyName == 'lat') {
+                $this->$keyName = (float) $value;
+            } else {
+                $this->$keyName = (string) $value;
+            }
         }
     }
 
