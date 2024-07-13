@@ -13,27 +13,35 @@ class ChildrenRecursively
 
     public function __construct(RegionModel $region, string $code, int $deep = 0)
     {
-        $this->regions = new Collection();
-        $this->loadRecursively($region, $code, $deep);
+        $this->regions = $this->loadRecursively($region, $code, $deep);
     }
 
-    protected function loadRecursively(RegionModel $region, string $code, int $deep = 0)
+    /**
+     * 加载封装
+     * @param \SimpleCMS\Region\Packages\RegionModel $region
+     * @param string $code
+     * @param int $deep
+     * @return \Illuminate\Support\Collection
+     */
+    protected function loadRecursively(RegionModel $region, string $code, int $deep = 0):Collection
     {
+        $regions  = new Collection();
         if ($region->code === $code) {
-            $this->regions = $region->children;
+            $regions = $region->children;
             if ($deep > 0) {
                 foreach ($region->children as $child) {
-                    $this->regions = $this->regions->merge($this->loadRecursively($child, $code, $deep - 1));
+                    $regions = $regions->merge($this->loadRecursively($child, $code, $deep - 1));
                 }
             }
         } else {
             foreach ($region->children as $child) {
-                $this->regions = $this->loadRecursively($child, $code, $deep);
-                if ($this->regions->isNotEmpty()) {
+                $regions = $this->loadRecursively($child, $code, $deep);
+                if ($regions->isNotEmpty()) {
                     break;
                 }
             }
         }
+        return $regions;
     }
 
     /**
