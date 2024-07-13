@@ -42,9 +42,15 @@ class RegionModel extends RegionStatic implements \JsonSerializable
         }
     }
 
+    /**
+     * 初始化数据
+     * @param array $data
+     * @param mixed $parent
+     * @return void
+     */
     protected function initData(array $data, ?RegionStatic $parent = null)
     {
-        $data = array_merge([
+        $imp = [
             'name' => null,
             'short' => null,
             'code' => null,
@@ -53,14 +59,11 @@ class RegionModel extends RegionStatic implements \JsonSerializable
             'lng' => 0,
             'lat' => 0,
             'children' => []
-        ], $data);
-        $this->name = trim($data['name']);
-        $this->short = trim($data['short']);
-        $this->code = trim($data['code']);
-        $this->area = trim($data['area']);
-        $this->zip = trim($data['zip']);
-        $this->lng = (float) $data['lng'];
-        $this->lat = (float) $data['lat'];
+        ];
+        $data = array_merge($imp, $data);
+        foreach (array_keys($imp) as $keyName) {
+            $this->setValue($keyName, $data[$keyName]);
+        }
         $this->parent = $parent;
         if ($this->deep < 4 && is_array($data['children'])) {
             foreach ($data['children'] as $child) {
@@ -87,6 +90,33 @@ class RegionModel extends RegionStatic implements \JsonSerializable
         $self->lng = $this->lng;
         $self->lat = $this->lat;
         return $self;
+    }
+
+    protected function setValue(string $keyName, $value): void
+    {
+        switch ($keyName) {
+            case 'name':
+                $this->name = (string) $value;
+                break;
+            case 'short':
+                $this->short = (string) $value;
+                break;
+            case 'code':
+                $this->code = (string) $value;
+                break;
+            case 'area':
+                $this->area = (string) $value;
+                break;
+            case 'zip':
+                $this->zip = (string) $value;
+                break;
+            case 'lng':
+                $this->lng = (float) $value;
+                break;
+            case 'lat':
+                $this->lat = (float) $value;
+                break;
+        }
     }
 
     /**
