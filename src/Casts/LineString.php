@@ -12,7 +12,7 @@ class LineString implements CastsAttributes
      * @param mixed $field
      * @return string
      */
-    public static function select($field):string
+    public static function select($field): string
     {
         return "ST_AsText($field) as $field";
     }
@@ -31,8 +31,7 @@ class LineString implements CastsAttributes
         if (empty($value)) {
             return null;
         }
-        if(!is_string($value) || !mb_check_encoding($value, 'UTF-8'))
-        {
+        if (!is_string($value) || !mb_check_encoding($value, 'UTF-8')) {
             $tableName = $model->getTable();
             $keyName = $model->getKeyName();
             $keyValue = $model->$keyName;

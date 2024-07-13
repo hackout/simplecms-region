@@ -1,16 +1,30 @@
 <?php
 namespace SimpleCMS\Region\Validation\Rule;
 
-use Illuminate\Contracts\Validation\Rule;
 use SimpleCMS\Region\Validation\RegionCode;
+use Illuminate\Contracts\Validation\ValidationRule;
 
 /**
  * 行政代码
  *
  * @author Dennis Lui <hackout@vip.qq.com>
  */
-class RegionCodeRule implements Rule
+class RegionCodeRule implements ValidationRule
 {
+    /**
+     * Run the validation rule.
+     *
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
+     * @return void
+     */
+    public function validate(string $attribute, mixed $value, \Closure $fail): void
+    {
+        if (!$this->passes($attribute, $value)) {
+            $fail($this->message());
+        }
+    }
 
     /**
      * Determine if the validation rule passes.
@@ -31,6 +45,6 @@ class RegionCodeRule implements Rule
      */
     public function message()
     {
-        return 'The code of region is incorrect.';
+        return 'The :attribute is incorrect.';
     }
 }

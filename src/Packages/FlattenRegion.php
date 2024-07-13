@@ -39,7 +39,7 @@ class FlattenRegion
         $newArray = [
             $region
         ];
-        if ($children) {
+        if ($children->count()) {
             foreach ($children as $child) {
                 $newArray[] = $this->flatten($child);
             }

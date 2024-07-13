@@ -15,7 +15,7 @@ class RegionModel extends RegionStatic implements \JsonSerializable
      *
      * @var Collection<RegionModel>
      */
-    public Collection $children;
+    public ?Collection $children;
 
     /**
      * 上级
@@ -25,7 +25,7 @@ class RegionModel extends RegionStatic implements \JsonSerializable
 
     public function __construct()
     {
-        $this->children = collect();
+        $this->children = new Collection();
     }
 
     /**
