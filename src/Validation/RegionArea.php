@@ -5,7 +5,7 @@ namespace SimpleCMS\Region\Validation;
 /**
  * 检查区号
  */
-class RegionArea
+class RegionArea implements RegionInterface
 {
     protected string $area;
 

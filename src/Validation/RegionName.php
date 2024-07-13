@@ -5,7 +5,7 @@ namespace SimpleCMS\Region\Validation;
 /**
  * 检查地区名称
  */
-class RegionName
+class RegionName implements RegionInterface
 {
     protected string $name;
 

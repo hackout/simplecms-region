@@ -5,7 +5,7 @@ namespace SimpleCMS\Region\Validation;
 /**
  * 检查电话号码
  */
-class RegionNumber
+class RegionNumber implements RegionInterface
 {
     protected string $number;
 

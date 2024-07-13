@@ -5,7 +5,7 @@ namespace SimpleCMS\Region\Validation;
 /**
  * 检查邮编
  */
-class RegionZip
+class RegionZip implements RegionInterface
 {
     protected string $zip;
 

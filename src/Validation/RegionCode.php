@@ -5,7 +5,7 @@ namespace SimpleCMS\Region\Validation;
 /**
  * 检查行政代码
  */
-class RegionCode
+class RegionCode implements RegionInterface
 {
     protected string $code;
 
