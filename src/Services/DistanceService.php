@@ -2,6 +2,8 @@
 
 namespace SimpleCMS\Region\Services;
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Query\Builder;
 use SimpleCMS\Framework\Services\SimpleService;
 
 class DistanceService
@@ -16,7 +18,7 @@ class DistanceService
      * @param  string $column
      * @return string
      */
-    protected function distanceRaw(float $lat, float $lng, string $column = 'location'): string
+    private function distanceRaw(float $lat, float $lng, string $column = 'location'): string
     {
         return "ST_Distance_Sphere($column,ST_GeomFromText('POINT($lng $lat)',4326))";
     }
@@ -34,7 +36,7 @@ class DistanceService
     public function selectDistance(SimpleService $service, float $lat, float $lng, string $column = 'location', string $alias = 'distance'): SimpleService
     {
         $distanceRaw = $this->distanceRaw($lat, $lng, $column);
-        $service->setSelectRaw($distanceRaw . ' AS ' . $alias);
+        $service->setSelect(DB::raw($distanceRaw . ' AS ' . $alias));
         return $service;
     }
 
@@ -55,7 +57,7 @@ class DistanceService
         $distanceRaw = $this->distanceRaw($lat, $lng, $column);
         $service->appendQuery([
             [
-                function ($query) use ($distanceRaw, $maxDistance) {
+                function (Builder $query) use ($distanceRaw, $maxDistance) {
                     $query->whereRaw("$distanceRaw <= $maxDistance");
                 }
             ]

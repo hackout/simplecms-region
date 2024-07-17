@@ -24,8 +24,7 @@ class RegionServiceProvider extends ServiceProvider
         $this->loadedValidator();
         $this->loadedHelpers();
         $this->loadFacades();
-        $this->addService();
-        $this->addMacro();
+        $this->bindMacroService();
     }
 
     /**
@@ -36,26 +35,16 @@ class RegionServiceProvider extends ServiceProvider
      */
     protected function loadedValidator(): void
     {
-        Validator::extend(
-            'region_area',
-            RegionAreaRule::class
-        );
-        Validator::extend(
-            'region_code',
-            RegionCodeRule::class
-        );
-        Validator::extend(
-            'region_name',
-            RegionNameRule::class
-        );
-        Validator::extend(
-            'region_number',
-            RegionNumberRule::class
-        );
-        Validator::extend(
-            'region_zip',
-            RegionZipRule::class
-        );
+        $map = [
+            'region_area' => RegionAreaRule::class,
+            'region_code' => RegionCodeRule::class,
+            'region_name' => RegionNameRule::class,
+            'region_number' => RegionNumberRule::class,
+            'region_zip' => RegionZipRule::class
+        ];
+        foreach ($map as $name => $class) {
+            Validator::extend($name, $class);
+        }
     }
 
     /**
@@ -64,7 +53,7 @@ class RegionServiceProvider extends ServiceProvider
      * @author Dennis Lui <hackout@vip.qq.com>
      * @return void
      */
-    protected function addMacro(): void
+    protected function bindMacroService(): void
     {
         if (class_exists(SimpleService::class)) {
             SimpleService::macro('queryDistance', function (SimpleService $service, float $lat, float $lng, float $maxDistance = 50, string $geoColumn) {
@@ -74,26 +63,6 @@ class RegionServiceProvider extends ServiceProvider
             SimpleService::macro('selectDistance', function (SimpleService $service, float $lat, float $lng, string $geoColumn, string $alias) {
                 $distanceService = new DistanceService;
                 return $distanceService->selectDistance($service, $lat, $lng, $geoColumn, $alias);
-            });
-        }
-    }
-
-    /**
-     * 绑定自定义Service
-     *
-     * @author Dennis Lui <hackout@vip.qq.com>
-     * @return void
-     */
-    protected function addService(): void
-    {
-        if (class_exists(SimpleService::class)) {
-            SimpleService::macro('queryDistance', function (SimpleService $service, float $lat, float $lng, float $maxDistance = 50, string $geoColumn) {
-                $distanceService = new DistanceService;
-                return $distanceService->queryDistance($service, $lat, $lng, $maxDistance, $geoColumn);
-            });
-            SimpleService::macro('selectDistance', function (SimpleService $service, float $lat, float $lng, string $geoColumn) {
-                $distanceService = new DistanceService;
-                return $distanceService->selectDistance($service, $lat, $lng, $geoColumn);
             });
         }
     }
