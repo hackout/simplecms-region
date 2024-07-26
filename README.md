@@ -22,6 +22,24 @@ composer require simplecms/region
 
 Includes a distance method.
 
+### Model Usage
+
+Use ```RegionTrait``` to associate with the model.
+
+```php
+use \SimpleCMS\Region\Traits\RegionTrait;
+```
+
+The model will automatically associate with the ```region``` morphMany relationship
+
+#### SCOPE
+
+Query model attributes values
+
+```php
+$query->withGeoDistance(23.9999,133.9999,10000);
+```
+
 ### Get Geographic List
 
 ```php

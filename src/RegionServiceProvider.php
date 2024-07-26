@@ -21,6 +21,7 @@ class RegionServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->bootConfig();
         $this->loadedValidator();
         $this->loadedHelpers();
         $this->loadFacades();
@@ -110,5 +111,16 @@ class RegionServiceProvider extends ServiceProvider
 
             require_once $path;
         }
+    }
+
+    /**
+     * 初始化配置文件
+     * @return void
+     */
+    protected function bootConfig(): void
+    {
+        $this->publishes([
+            __DIR__ . '/../database/migrations' => database_path('migrations'),
+        ], 'simplecms');
     }
 }

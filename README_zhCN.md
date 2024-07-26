@@ -22,6 +22,24 @@ composer require simplecms/region
 
 内置了distance方法。
 
+### Model模型使用
+
+使用```RegionTrait```对模型进行关联
+
+```php
+use \SimpleCMS\Region\Traits\RegionTrait;
+```
+
+模型会自动关联上```region```这个morphOne关系
+
+#### SCOPE
+
+查询模型attributes值
+
+```php
+$query->withGeoDistance(23.9999,133.9999,10000);
+```
+
 ### 获取地理列表
 
 ```php

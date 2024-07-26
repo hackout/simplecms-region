@@ -55,13 +55,9 @@ class DistanceService
     {
         $this->selectDistance($service, $lat, $lng, $column);
         $distanceRaw = $this->distanceRaw($lat, $lng, $column);
-        $service->appendQuery([
-            [
-                function (Builder $query) use ($distanceRaw, $maxDistance) {
-                    $query->whereRaw("$distanceRaw <= $maxDistance");
-                }
-            ]
-        ]);
+        $service->setQuery(function (Builder $query) use ($distanceRaw, $maxDistance) {
+            $query->whereRaw("$distanceRaw <= $maxDistance");
+        });
         return $service;
     }
 }
