@@ -2,6 +2,7 @@
 
 namespace SimpleCMS\Region\Traits;
 
+use Illuminate\Support\Facades\DB;
 use SimpleCMS\Region\Models\Region;
 
 /**
