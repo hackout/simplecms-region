@@ -40,17 +40,12 @@ Query model attributes values
 $query->withGeoDistance(23.9999,133.9999,10000);
 ```
 
-### Get Geographic List
+### Facade
 
 ```php
 use SimpleCMS\Region\Facades\Region; 
+
 Region::getAll(); // Returns the complete list
-```
-
-### Query and Check
-
-```php
-use SimpleCMS\Region\Facades\Region; 
 Region::findRegion(string $code = 'Administrative Identifier'); // Query geographic information
 Region::getAllChildren(string $code = 'Administrative Identifier'); // Query all children
 Region::getChildren(string $code, int $deep = 0); // Query down with depth

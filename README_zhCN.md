@@ -40,19 +40,13 @@ use \SimpleCMS\Region\Traits\RegionTrait;
 $query->withGeoDistance(23.9999,133.9999,10000);
 ```
 
-### 获取地理列表
+### Facade
 
 ```php
 use SimpleCMS\Region\Facades\Region; 
+
 
 Region::getAll(); //返回完整列表
-```
-
-### 查询及检查
-
-```php
-use SimpleCMS\Region\Facades\Region; 
-
 Region::findRegion(string $code = '行政标识'); //查询地理信息
 Region::getAllChildren(string $code = '行政标识'); // 查询所有下级
 Region::getChildren(string $code, int $deep = 0); // 带深度向下查询
