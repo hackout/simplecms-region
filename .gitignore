@@ -1,0 +1,22 @@
+# Composer
+/vendor/
+/composer.lock
+
+# Local environment
+.env
+.env.*
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test / build artifacts
+phpunit.xml
+coverage/
+.phpunit.result.cache
